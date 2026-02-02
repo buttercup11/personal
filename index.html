@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Be My Valentine 💖</title>
+  <title>Be My Valentine ❤️</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -16,6 +16,7 @@
       align-items: center;
       background: linear-gradient(135deg, #f5c6f6, #D287D7);
       font-family: "Poppins", sans-serif;
+      overflow: hidden;
     }
 
     .container {
@@ -55,10 +56,11 @@
       color: white;
       position: relative;
       transition: all 0.3s ease;
+      z-index: 100;
     }
 
     #no.moving {
-      position: absolute;
+      position: fixed;
     }
 
     .heart {
@@ -169,16 +171,22 @@
 
     noButton.addEventListener("mouseover", () => {
       noCount++;
+
       if (noCount === 1) {
+        document.body.appendChild(noButton);
         noButton.classList.add('moving');
       }
       
       counter.textContent = `Dodges: ${noCount} 🏃`;
       counter.classList.add('bump');
       setTimeout(() => counter.classList.remove('bump'), 300);
+
+      const maxX = window.innerWidth - noButton.offsetWidth - 20;
+      const maxY = window.innerHeight - noButton.offsetHeight - 20;
       
-      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
-      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      const x = Math.random() * Math.max(0, maxX);
+      const y = Math.random() * Math.max(0, maxY);
+      
       noButton.style.left = `${x}px`;
       noButton.style.top = `${y}px`;
       
