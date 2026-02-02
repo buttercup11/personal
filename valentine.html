@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Be My Valentine 💖</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      height: 100vh;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+      font-family: "Poppins", sans-serif;
+    }
+
+    .container {
+      text-align: center;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 30px;
+      font-family: "Dancing Script", cursive;
+      font-weight: 700;
+    }
+
+    button {
+      font-size: 1.2rem;
+      padding: 12px 24px;
+      margin: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    #yes {
+      background: #ff4d6d;
+      color: white;
+      transform-origin: center;
+    }
+
+    #no {
+      background: #aaa;
+      color: white;
+      position: absolute;
+      transition: all 0.3s ease;
+    }
+
+    .heart {
+      position: fixed;
+      font-size: 2rem;
+      animation: float 3s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(-10vh);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(110vh);
+        opacity: 0.8;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+    }
+
+    #counter {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 15px 25px;
+      border-radius: 15px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #ff4d6d;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+
+    #counter.bump {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+
+<body>
+  <div id="counter">Dodges: 0 🏃</div>
+  <div class="container">
+    <h1 id="question">Hi Muffin, will you be my Valentine? 💘</h1>
+    <button id="yes">YES ✅</button>
+    <button id="no">NO 😢</button>
+  </div>
+
+  <script>
+    const noButton = document.getElementById("no");
+    const yesButton = document.getElementById("yes");
+    const question = document.getElementById("question");
+    const counter = document.getElementById("counter");
+    let noCount = 0;
+    let yesScale = 1;
+
+    // Play "Can't Help Falling in Love" audio from SoundCloud
+    function playSuccess() {
+      // Create and show SoundCloud player
+      const player = document.createElement('div');
+      player.innerHTML = '<iframe width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/873872020&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>';
+      player.style.position = 'fixed';
+      player.style.bottom = '20px';
+      player.style.left = '50%';
+      player.style.transform = 'translateX(-50%)';
+      player.style.width = '90%';
+      player.style.maxWidth = '600px';
+      player.style.zIndex = '1000';
+      player.style.borderRadius = '10px';
+      player.style.overflow = 'hidden';
+      player.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+      document.body.appendChild(player);
+    }
+
+    const messages = [
+      "Hi Muffin, will you be my Valentine? 💘",
+      "Nope! Try again 😒",
+      "Did you think I wouldn't notice? 🤨",
+      "I am watching you babe 👀",
+      "Stop chasing it! Just say YES! 😤",
+      "You think I'll give up that easily? 😂",
+      "Isn't your mouse getting tired? 🖱️",
+      "The YES button is literally SCREAMING for attention babe! 😍",
+      "YOU HAVE NO CHOICE. RESISTANCE IS FUTILE. 👽"
+    ];
+
+    function createHeart() {
+      const heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.textContent = '❤️';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.top = '-10vh';
+      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
+      heart.style.animationDelay = '0s';
+      document.body.appendChild(heart);
+      setTimeout(() => heart.remove(), 8000);
+    }
+
+    noButton.addEventListener("mouseover", () => {
+      noCount++;
+      
+      // Update counter with animation
+      counter.textContent = `Dodges: ${noCount} 🏃`;
+      counter.classList.add('bump');
+      setTimeout(() => counter.classList.remove('bump'), 300);
+      
+      // Move the No button
+      const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+      
+      // Grow the Yes button
+      yesScale += 0.15;
+      yesButton.style.transform = `scale(${yesScale})`;
+      yesButton.style.fontSize = `${1.2 * yesScale}rem`;
+      
+      // Shrink the No button
+      const noScale = Math.max(0.5, 1 - noCount * 0.1);
+      noButton.style.transform = `scale(${noScale})`;
+      
+      // Change the message
+      if (noCount <= messages.length) {
+        question.textContent = messages[Math.min(noCount, messages.length - 1)];
+      }
+    });
+
+    yesButton.addEventListener("click", () => {
+      // Create lots of hearts
+      for (let i = 0; i < 30; i++) {
+        setTimeout(() => createHeart(), i * 100);
+      }
+      
+      document.body.innerHTML = `
+        <div style="
+          height:100vh;
+          display:flex;
+          justify-content:center;
+          align-items:center;
+          background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+          font-family:Poppins,sans-serif;
+          text-align:center;
+          animation: pulse 1.5s ease-in-out infinite;
+        ">
+          <div>
+            <h1 style="font-size:3.5rem;margin-bottom:20px;font-family:'Dancing Script',cursive;font-weight:700;">You said YES!</h1>
+            <h2 style="font-size:2rem;font-weight:400;">I love you so much, Muffin</h2>
+            <p style="font-size:1.5rem;margin-top:20px;font-weight:300;">Here's a rose for all your troubles 🌹</p>
+            <div style="margin-top:40px;max-width:500px;margin-left:auto;margin-right:auto;">
+              <iframe width="100%" height="20" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/873872020&color=%23ff5500&auto_play=true&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=false"></iframe>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      // Continue creating hearts on success screen
+      setInterval(() => createHeart(), 300);
+    });
+  </script>
+</body>
+</html>
